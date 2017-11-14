@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import Table from './components/Table';
 import Button from './components/Button';
-// DRAW TABLES/DIV/SVG 
-
-// EACH TABLE CELL CAN HOLD STATUS EITHER LIVE OR DEAD
-
-
 
 class App extends Component {
   constructor(props){
@@ -14,16 +9,16 @@ class App extends Component {
     this.state = {
       tableSize :40,
       tableContent: null,
-      countDownInterval: null,
       frameID:null,
-
+      generation: 0 ,
+      paused: "no",
     }
 
     this.onClickCell = this.onClickCell.bind(this);
     this.getAdjacentCellsID = this.getAdjacentCellsID.bind(this);
     this.getAdjacentCellsObject = this.getAdjacentCellsObject.bind(this);
-    this.onClickButton = this.onClickButton.bind(this);
-    this.onClickStart = this.onClickStart.bind(this);
+    this.runGame = this.runGame.bind(this);
+    this.onClickPlay = this.onClickPlay.bind(this);
     this.onClickPause = this.onClickPause.bind(this);
     this.onClickReset = this.onClickReset.bind(this);
     this.onClickRandom = this.onClickRandom.bind(this);
@@ -205,9 +200,10 @@ class App extends Component {
     //this.setState({ tableContent: tableContentTemp });
   }
   
-  onClickButton(){
+  runGame(){
     let tableContentTemp = [...this.state.tableContent];
     let _tableContentTemp = [];
+    let _generation = this.state.generation;
 
     tableContentTemp.map((elm,idx)=>{
       if(elm.x === "dead"){
@@ -219,30 +215,34 @@ class App extends Component {
       }
     });
     this.setState({ tableContent: _tableContentTemp});
-    let _frameID = requestAnimationFrame(this.onClickButton);
-    this.setState({ frameID: _frameID });
+    let _frameID = requestAnimationFrame(this.runGame);
+    this.setState({ frameID: _frameID, generation: _generation + 1 });
   }
 
-  onClickStart(){
-    this.onClickButton();
+  onClickPlay(){
+    if(this.state.generation === 0 || this.state.paused ==="yes"){
+      this.setState({paused:"no"})
+      this.runGame();
+    }
   }
   
   onClickPause() {
     let _frameID = this.state.frameID;
     cancelAnimationFrame(_frameID);
+    this.setState({paused:"yes"})
   }
  
   onClickReset() {
     let _frameID = this.state.frameID;
     cancelAnimationFrame(_frameID);
-    this.setState({ _frameID: null });
+    this.setState({ frameID: null, generation: 0, paused: "no" });
     this.createTableContent();
   }
 
   onClickRandom() {
     let _frameID = this.state.frameID;
     cancelAnimationFrame(_frameID);
-    this.setState({ _frameID: null });
+    this.setState({ frameID: null, generation: 0, paused: "no" });
     this.createTableContent("random");
   }
   
@@ -271,25 +271,53 @@ class App extends Component {
     }
   }
 
-  componentDidMount(){
-    this.createTableContent();
+  componentWillMount(){
+    this.createTableContent("random");
+     
   }
+
+  componentDidMount(){
+    if (this.state.tableContent) {
+      this.runGame();
+    }
+  }
+
 
   render() {
     if(!this.state.tableContent) return null;
     return (
-      <div className="header">
-        <Table 
-          tableContent = {this.state.tableContent} 
-          tableSize = {this.state.tableSize} 
-          onClickCell = {this.onClickCell}
-        />
-        <br/>
-        {/* <Button onClickMe = {this.onClickButton} > Step </Button> */}
-        <Button onClickMe = {this.onClickStart} > Start </Button>
-        <Button onClickMe = {this.onClickPause} > Pause </Button>
-        <Button onClickMe = {this.onClickReset} > Clear </Button>
-        <Button onClickMe = {this.onClickRandom} > Random </Button>
+      <div className="container">
+        <div className="head">
+          <h1>Conway's Game of Life</h1>
+        </div>
+        <div className="container-board">
+          <Table
+            tableContent={this.state.tableContent}
+            tableSize={this.state.tableSize}
+            onClickCell={this.onClickCell}
+          />
+        </div>
+        <div className="container-button">
+          {/* <Button onClickMe = {this.runGame} > Step </Button> */}
+          <Button onClickMe={this.onClickPlay} > Play </Button> <br />
+          <Button onClickMe={this.onClickPause} > Pause </Button> <br />
+          <Button onClickMe={this.onClickReset} > Clear </Button> <br />
+          <Button onClickMe={this.onClickRandom} > Random </Button> <br />
+          <br/>
+          <div className="generation">
+            <strong>Generation</strong>
+            <br />
+            <br />
+            {this.state.generation}
+          </div>
+        </div>
+        <div className="container-footer">
+          <p>
+            Created by : Eka ( 
+            <a href='https://codepen.io/risyana/'>Codepen</a> - 
+            <a href='https://www.freecodecamp.org/risyana'> FCC</a> )
+          </p>
+        </div>
       </div>
     );
   }

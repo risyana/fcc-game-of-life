@@ -6,7 +6,7 @@ class Table extends Component {
             <div className='tableContainer'>
                 {
                     this.props.tableContent.map((elm, idx) => {
-                        if(idx % this.props.tableSize ===  0 ){
+                        if(idx % (this.props.tableSize * 1) ===  0 ){
                             return <div 
                                     onClick = {this.props.onClickCell}
                                     key={idx} 
