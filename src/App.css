@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Timmana');
+
 div.live {
   float: left;
   width:10px;
@@ -38,10 +40,14 @@ div.adjacent {
 div.container{  
   width: 100%;
   text-align: center;
+  font-family: Timmana;
 }
 
 div.head{
   width: 100%;
+  padding:0px;
+  margin-top:-20px;
+  margin-bottom:-30px;
 }
 
 div.container-board{
@@ -60,8 +66,10 @@ div.container-footer{
   width: 60%;
   float: left;
   clear: both;
-  text-align: right;
+  text-align: center;
   font-size: 12px;
+  margin-top:-10px;
+  margin-left: 200px;
 }
 
 a{
@@ -83,12 +91,14 @@ div.tableContainer:hover {
 button, div.generation {
   background-color: rgb(209, 209, 209);
   width: 100px;
-  height: 35px;
+  height: 30px;
   border: solid 1px gray;
   margin: 10px;
   margin-top: 0px;
+  padding-top: 5px;
   box-shadow: 0px 1px 5px  rgba(173, 173, 173, 0.5);  
   border-radius: 2px;
+  font-family: Timmana;
 }
 
 button:hover{
@@ -99,10 +109,11 @@ button:hover{
 div.generation {
   background-color: rgb(201, 201, 201);
   width: 100px;
-  height: 70px;
+  height: 50px;
   border: solid 1px gray;
   margin: 15px;
   margin-top: 0px;
+  padding-top: 5px;
   box-shadow: 0px 1px 5px  rgba(173, 173, 173, 0.5);  
   border-radius: 2px;
   font-size: 14px;
