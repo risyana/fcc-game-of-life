@@ -307,7 +307,6 @@ class App extends Component {
           <div className="generation">
             <strong>Generation</strong>
             <br />
-            <br />
             {this.state.generation}
           </div>
         </div>
